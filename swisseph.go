@@ -428,7 +428,7 @@ func HousesEx(tjdUt float64, iflag int32, geolat, geolon float64, hsys byte) Hou
 }
 
 // HousesEx2 calculates house cusps with extended options (version 2)
-func HousesEx2(tjdUt float64, iflag int32, geolat, geolon float64, hsys byte) HousesResult {
+func HousesEx2(tjdUt float64, iflag int32, geolat, geolon float64, hsys byte) (HousesEx2Result, error) {
 	var cusps [37]C.double
 	var ascmc [10]C.double
 	var cuspSpeed [37]C.double
@@ -448,26 +448,34 @@ func HousesEx2(tjdUt float64, iflag int32, geolat, geolon float64, hsys byte) Ho
 		&serr[0],
 	)
 
+	if flag == ERR {
+		return HousesEx2Result{}, fmt.Errorf("%s", C.GoString(&serr[0]))
+	}
+
 	numHouses := 12
-	if hsys == 'G' && flag == OK {
+	if hsys == 'G' {
 		numHouses = 36
 	}
 
-	result := HousesResult{
-		Flag:   int32(flag),
-		Houses: make([]float64, numHouses),
-		Points: make([]float64, 8),
+	result := HousesEx2Result{
+		Flag:        int32(flag),
+		Houses:      make([]float64, numHouses),
+		Points:      make([]float64, 8),
+		HouseSpeeds: make([]float64, numHouses),
+		PointSpeeds: make([]float64, 8),
 	}
 
 	for i := 0; i < numHouses; i++ {
 		result.Houses[i] = float64(cusps[i+1])
+		result.HouseSpeeds[i] = float64(cuspSpeed[i+1])
 	}
 
 	for i := 0; i < 8; i++ {
 		result.Points[i] = float64(ascmc[i])
+		result.PointSpeeds[i] = float64(ascmcSpeed[i])
 	}
 
-	return result
+	return result, nil
 }
 
 // HousesArmc calculates house cusps from ARMC
@@ -507,7 +515,7 @@ func HousesArmc(armc float64, geolat float64, eps float64, hsys byte) HousesResu
 }
 
 // HousesArmcEx2 calculates house cusps from ARMC with extended options
-func HousesArmcEx2(armc float64, geolat float64, eps float64, hsys byte) HousesResult {
+func HousesArmcEx2(armc float64, geolat float64, eps float64, hsys byte) (HousesEx2Result, error) {
 	var cusps [37]C.double
 	var ascmc [10]C.double
 	var cuspSpeed [37]C.double
@@ -526,26 +534,34 @@ func HousesArmcEx2(armc float64, geolat float64, eps float64, hsys byte) HousesR
 		&serr[0],
 	)
 
+	if flag == ERR {
+		return HousesEx2Result{}, fmt.Errorf("%s", C.GoString(&serr[0]))
+	}
+
 	numHouses := 12
-	if hsys == 'G' && flag == OK {
+	if hsys == 'G' {
 		numHouses = 36
 	}
 
-	result := HousesResult{
-		Flag:   int32(flag),
-		Houses: make([]float64, numHouses),
-		Points: make([]float64, 8),
+	result := HousesEx2Result{
+		Flag:        int32(flag),
+		Houses:      make([]float64, numHouses),
+		Points:      make([]float64, 8),
+		HouseSpeeds: make([]float64, numHouses),
+		PointSpeeds: make([]float64, 8),
 	}
 
 	for i := 0; i < numHouses; i++ {
 		result.Houses[i] = float64(cusps[i+1])
+		result.HouseSpeeds[i] = float64(cuspSpeed[i+1])
 	}
 
 	for i := 0; i < 8; i++ {
 		result.Points[i] = float64(ascmc[i])
+		result.PointSpeeds[i] = float64(ascmcSpeed[i])
 	}
 
-	return result
+	return result, nil
 }
 
 // HousePos calculates the house position of a celestial point

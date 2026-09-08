@@ -31,6 +31,14 @@ type HousesResult struct {
 	Points []float64 // Ascendant, MC, ARMC, Vertex, etc.
 }
 
+type HousesEx2Result struct {
+	Flag        int32
+	Houses      []float64
+	Points      []float64
+	HouseSpeeds []float64
+	PointSpeeds []float64
+}
+
 // JulianDay represents a Julian day number
 type JulianDay float64
 
@@ -97,12 +105,12 @@ type FixstarMagResult struct {
 
 // NodApsResult represents nodes and apsides calculation results
 type NodApsResult struct {
-	Flag        int32     // Return flag
-	Ascending   []float64 // Ascending node data
-	Descending  []float64 // Descending node data
-	Perihelion  []float64 // Perihelion data
-	Aphelion    []float64 // Aphelion data
-	Error       string    // Error message if any
+	Flag       int32     // Return flag
+	Ascending  []float64 // Ascending node data
+	Descending []float64 // Descending node data
+	Perihelion []float64 // Perihelion data
+	Aphelion   []float64 // Aphelion data
+	Error      string    // Error message if any
 }
 
 // OrbitalElementsResult represents orbital elements
@@ -143,4 +151,3 @@ type FileData struct {
 	EndDate   float64 // End date of file coverage
 	Denum     int32   // DE number (for JPL files)
 }
-
