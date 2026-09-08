@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"time"
 
-	swisseph "github.com/tejzpr/go-swisseph"
+	swisseph "github.com/hpsbranco/go-swisseph/v2"
 )
 
 func main() {
@@ -164,4 +164,3 @@ func getLunarEclipseType(flag int32) string {
 	}
 	return "Lunar Eclipse"
 }
-

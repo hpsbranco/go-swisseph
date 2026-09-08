@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"unsafe"
 
-	_ "github.com/tejzpr/go-swisseph/swisseph"
+	_ "github.com/hpsbranco/go-swisseph/v2/swisseph"
 )
 
 /*
@@ -39,7 +39,7 @@ const (
 )
 
 // PackageVersion is the version of the Go Swiss Ephemeris bindings
-const PackageVersion = "v1.0.0"
+const PackageVersion = "v2.0.0"
 
 // Version returns the Swiss Ephemeris version string
 func Version() string {

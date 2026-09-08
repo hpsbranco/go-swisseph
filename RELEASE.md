@@ -62,11 +62,11 @@ git push origin v1.0.0
 
 ### 6. Verify on pkg.go.dev
 
-After pushing, the package will automatically appear on [pkg.go.dev](https://pkg.go.dev/github.com/tejzpr/go-swisseph) within a few minutes.
+After pushing, the package will automatically appear on [pkg.go.dev](https://pkg.go.dev/github.com/hpsbranco/go-swisseph) within a few minutes.
 
 Users can then install the specific version:
 ```bash
-go get github.com/tejzpr/go-swisseph@v1.0.0
+go get github.com/hpsbranco/go-swisseph@v1.0.0
 ```
 
 ## Pre-Release Checklist
@@ -82,4 +82,3 @@ go get github.com/tejzpr/go-swisseph@v1.0.0
 ## Current Version
 
 **v1.0.0** - Initial stable release
-

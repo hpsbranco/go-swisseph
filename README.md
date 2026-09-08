@@ -2,7 +2,7 @@
 
 A comprehensive Go binding for the Swiss Ephemeris library - the definitive astronomical calculation library for astrology and astronomy applications.
 
-**Version:** v1.0.0
+**Version:** v2.0.0
 
 ## Features
 
@@ -23,7 +23,7 @@ A comprehensive Go binding for the Swiss Ephemeris library - the definitive astr
 
 ```bash
 # Clone the repository
-git clone https://github.com/tejzpr/go-swisseph.git
+git clone https://github.com/hpsbranco/go-swisseph.git
 cd go-swisseph
 
 # Now you can use the library
@@ -33,7 +33,7 @@ go test -v
 ### Install via go get
 
 ```bash
-go get github.com/tejzpr/go-swisseph
+go get github.com/hpsbranco/go-swisseph/v2
 ```
 
 ### Important: Swiss Ephemeris Source Code
@@ -46,7 +46,7 @@ The `swisseph` package is a separate Go package that exists solely to make CGO c
 
 ### Go Bindings License
 
-This Go binding library (`github.com/tejzpr/go-swisseph`) is licensed under the **GNU Affero General Public License version 3 or later (AGPL-3.0-or-later)**.
+This Go binding library (`github.com/hpsbranco/go-swisseph`) is licensed under the **GNU Affero General Public License version 3 or later (AGPL-3.0-or-later)**.
 
 The Go wrapper code, bindings, and this repository are licensed under AGPL-3.0-or-later, which ensures full compatibility with Swiss Ephemeris licensing requirements.
 
@@ -77,17 +77,17 @@ package main
 
 import (
     "fmt"
-    swisseph "github.com/tejzpr/go-swisseph"
+    swisseph "github.com/hpsbranco/go-swisseph/v2"
 )
 
 func main() {
     // Set the path to ephemeris files (optional, uses default if not set)
     swisseph.SetEphePath("./ephe")
-    
+
     // Calculate Julian day for a date
     jd := swisseph.Julday(2024, 1, 1, 12.0, swisseph.GregCal)
     fmt.Printf("Julian Day: %.6f\n", jd)
-    
+
     // Calculate Sun position
     result := swisseph.CalcUT(jd, swisseph.Sun, swisseph.FlagSwieph|swisseph.FlagSpeed)
     if result.Flag >= 0 {
@@ -97,7 +97,7 @@ func main() {
     } else {
         fmt.Printf("Error: %s\n", result.Error)
     }
-    
+
     // Clean up
     swisseph.Close()
 }
@@ -113,7 +113,7 @@ jd := swisseph.Julday(2024, 1, 1, 12.0, swisseph.GregCal)
 
 // Convert Julian day back to calendar date
 date := swisseph.Revjul(jd, swisseph.GregCal)
-fmt.Printf("Year: %d, Month: %d, Day: %d, Hour: %.2f\n", 
+fmt.Printf("Year: %d, Month: %d, Day: %d, Hour: %.2f\n",
     date.Year, date.Month, date.Day, date.Hour)
 
 // Convert UTC to Julian day
@@ -168,7 +168,7 @@ if houses.Flag >= 0 {
     for i, cusp := range houses.Houses {
         fmt.Printf("House %d: %.6f°\n", i+1, cusp)
     }
-    
+
     fmt.Printf("Ascendant: %.6f°\n", houses.Points[swisseph.Asc])
     fmt.Printf("MC: %.6f°\n", houses.Points[swisseph.MC])
     fmt.Printf("ARMC: %.6f°\n", houses.Points[swisseph.ARMC])
@@ -208,11 +208,11 @@ if mag.Flag >= 0 {
 
 ```go
 // Find next solar eclipse globally
-eclipse := swisseph.SolEclipseWhenGlob(jd, swisseph.FlagSwieph, 
+eclipse := swisseph.SolEclipseWhenGlob(jd, swisseph.FlagSwieph,
     swisseph.EclAlltypesSolar, false)
 if eclipse.Flag >= 0 {
     fmt.Printf("Next solar eclipse: JD %.6f\n", eclipse.Maximum)
-    
+
     // Get eclipse type
     if eclipse.Flag&swisseph.EclTotal != 0 {
         fmt.Println("Type: Total")
@@ -224,7 +224,7 @@ if eclipse.Flag >= 0 {
 }
 
 // Find next lunar eclipse
-lunEclipse := swisseph.LunEclipseWhen(jd, swisseph.FlagSwieph, 
+lunEclipse := swisseph.LunEclipseWhen(jd, swisseph.FlagSwieph,
     swisseph.EclAlltypesLunar, false)
 if lunEclipse.Flag >= 0 {
     fmt.Printf("Next lunar eclipse: JD %.6f\n", lunEclipse.Maximum)
@@ -232,10 +232,10 @@ if lunEclipse.Flag >= 0 {
 
 // Calculate eclipse for a specific location
 geopos := [3]float64{-0.1278, 51.5074, 0} // London: lon, lat, altitude
-localEclipse := swisseph.SolEclipseWhenLoc(jd, swisseph.FlagSwieph, 
+localEclipse := swisseph.SolEclipseWhenLoc(jd, swisseph.FlagSwieph,
     geopos, false)
 if localEclipse.Flag >= 0 {
-    fmt.Printf("Eclipse visible from location at JD %.6f\n", 
+    fmt.Printf("Eclipse visible from location at JD %.6f\n",
         localEclipse.Maximum)
 }
 ```
@@ -245,11 +245,11 @@ if localEclipse.Flag >= 0 {
 ```go
 // Calculate sunrise
 geopos := [3]float64{-0.1278, 51.5074, 0} // London
-sunrise := swisseph.RiseTrans(jd, swisseph.Sun, "", 
+sunrise := swisseph.RiseTrans(jd, swisseph.Sun, "",
     swisseph.FlagSwieph, swisseph.CalcRise, geopos, 1013.25, 15.0)
 if sunrise.Flag >= 0 {
     fmt.Printf("Sunrise: JD %.6f\n", sunrise.Time)
-    
+
     // Convert to readable time
     utc := swisseph.JdetToUtc(sunrise.Time, swisseph.GregCal)
     fmt.Printf("Sunrise: %04d-%02d-%02d %02d:%02d:%.0f UTC\n",
@@ -257,11 +257,11 @@ if sunrise.Flag >= 0 {
 }
 
 // Calculate sunset
-sunset := swisseph.RiseTrans(jd, swisseph.Sun, "", 
+sunset := swisseph.RiseTrans(jd, swisseph.Sun, "",
     swisseph.FlagSwieph, swisseph.CalcSet, geopos, 1013.25, 15.0)
 
 // Calculate transit (culmination)
-transit := swisseph.RiseTrans(jd, swisseph.Sun, "", 
+transit := swisseph.RiseTrans(jd, swisseph.Sun, "",
     swisseph.FlagSwieph, swisseph.CalcMtransit, geopos, 1013.25, 15.0)
 ```
 
@@ -272,7 +272,7 @@ transit := swisseph.RiseTrans(jd, swisseph.Sun, "",
 swisseph.SetSidMode(swisseph.SidmLahiri, 0, 0)
 
 // Calculate with sidereal zodiac
-result := swisseph.CalcUT(jd, swisseph.Sun, 
+result := swisseph.CalcUT(jd, swisseph.Sun,
     swisseph.FlagSwieph|swisseph.FlagSidereal)
 fmt.Printf("Sidereal Sun: %.6f°\n", result.Data[0])
 
@@ -292,7 +292,7 @@ fmt.Printf("Ayanamsa system: %s\n", name)
 swisseph.SetTopo(-0.1278, 51.5074, 0) // London
 
 // Calculate with topocentric flag
-result := swisseph.CalcUT(jd, swisseph.Moon, 
+result := swisseph.CalcUT(jd, swisseph.Moon,
     swisseph.FlagSwieph|swisseph.FlagTopoctr)
 fmt.Printf("Topocentric Moon: %.6f°\n", result.Data[0])
 ```
@@ -331,7 +331,7 @@ fmt.Printf("Sign: %d, Degree: %d, Minute: %d, Second: %d\n",
 
 // Get day of week (0=Monday, 6=Sunday)
 dow := swisseph.DayOfWeek(jd)
-days := []string{"Monday", "Tuesday", "Wednesday", "Thursday", 
+days := []string{"Monday", "Tuesday", "Wednesday", "Thursday",
     "Friday", "Saturday", "Sunday"}
 fmt.Printf("Day of week: %s\n", days[dow])
 ```
@@ -381,7 +381,7 @@ Each main ephemeris file covers a range of 600 years starting from the century i
    git clone https://github.com/aloistr/swisseph.git
    cp -r swisseph/ephe/* ./ephe/
    ```
-   
+
    Or download individual files directly from GitHub:
    ```bash
    # Download specific files using curl
@@ -389,7 +389,7 @@ Each main ephemeris file covers a range of 600 years starting from the century i
    curl -L -o ephe/sepl_18.se1 https://raw.githubusercontent.com/aloistr/swisseph/master/ephe/sepl_18.se1
    curl -L -o ephe/semo_18.se1 https://raw.githubusercontent.com/aloistr/swisseph/master/ephe/semo_18.se1
    ```
-   
+
    **Recommended files for most users:**
    - `sepl_18.se1` - Planets (1800-2400)
    - `semo_18.se1` - Moon (1800-2400)
@@ -428,21 +428,21 @@ package main
 
 import (
     "fmt"
-    swisseph "github.com/tejzpr/go-swisseph"
+    swisseph "github.com/hpsbranco/go-swisseph/v2"
 )
 
 func main() {
     // Set ephemeris path before calculations
     swisseph.SetEphePath("./ephe")
-    
+
     // Now calculations will use high-precision ephemeris data
     jd := swisseph.Julday(2024, 1, 1, 12.0, swisseph.GregCal)
     result := swisseph.CalcUT(jd, swisseph.Mars, swisseph.FlagSwieph)
-    
+
     if result.Flag >= 0 {
         fmt.Printf("Mars: %.6f°\n", result.Data[0])
     }
-    
+
     swisseph.Close()
 }
 ```

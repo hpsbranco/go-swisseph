@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"time"
 
-	swisseph "github.com/tejzpr/go-swisseph"
+	swisseph "github.com/hpsbranco/go-swisseph/v2"
 )
 
 func main() {

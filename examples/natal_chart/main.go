@@ -20,7 +20,7 @@ package main
 import (
 	"fmt"
 
-	swisseph "github.com/tejzpr/go-swisseph"
+	swisseph "github.com/hpsbranco/go-swisseph/v2"
 )
 
 func main() {
@@ -226,4 +226,3 @@ func getLunarPhaseName(phase float64) string {
 		return "Waning Crescent"
 	}
 }
-

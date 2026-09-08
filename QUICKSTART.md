@@ -6,7 +6,7 @@ Get up and running with Go Swiss Ephemeris in 5 minutes!
 
 ```bash
 # Clone the repository
-git clone https://github.com/tejzpr/go-swisseph.git
+git clone https://github.com/hpsbranco/go-swisseph.git
 cd go-swisseph
 
 # IMPORTANT: Initialize the Swiss Ephemeris submodule
@@ -27,22 +27,22 @@ package main
 
 import (
     "fmt"
-    swisseph "github.com/tejzpr/go-swisseph"
+    swisseph "github.com/hpsbranco/go-swisseph/v2"
 )
 
 func main() {
     // Calculate Julian day for January 1, 2024, 12:00 UTC
     jd := swisseph.Julday(2024, 1, 1, 12.0, swisseph.GregCal)
-    
+
     // Calculate Sun position
     result := swisseph.CalcUT(jd, swisseph.Sun, swisseph.FlagSwieph)
-    
+
     if result.Flag >= 0 {
         fmt.Printf("Sun longitude: %.6f°\n", result.Data[0])
     } else {
         fmt.Printf("Error: %s\n", result.Error)
     }
-    
+
     // Clean up
     swisseph.Close()
 }
@@ -75,7 +75,7 @@ jd := swisseph.Julday(2024, 1, 1, 12.0, swisseph.GregCal)
 for _, planet := range planets {
     name := swisseph.GetPlanetName(planet)
     result := swisseph.CalcUT(jd, planet, swisseph.FlagSwieph)
-    
+
     if result.Flag >= 0 {
         fmt.Printf("%s: %.2f°\n", name, result.Data[0])
     }
@@ -94,7 +94,7 @@ houses := swisseph.Houses(jd, lat, lon, 'P') // Placidus system
 if houses.Flag >= 0 {
     fmt.Printf("Ascendant: %.2f°\n", houses.Points[swisseph.Asc])
     fmt.Printf("MC: %.2f°\n", houses.Points[swisseph.MC])
-    
+
     for i, cusp := range houses.Houses {
         fmt.Printf("House %d: %.2f°\n", i+1, cusp)
     }
@@ -108,22 +108,22 @@ jd := swisseph.Julday(2024, 1, 1, 0.0, swisseph.GregCal)
 geopos := [3]float64{-0.1278, 51.5074, 0} // London
 
 // Sunrise
-sunrise := swisseph.RiseTrans(jd, swisseph.Sun, "", 
+sunrise := swisseph.RiseTrans(jd, swisseph.Sun, "",
     swisseph.FlagSwieph, swisseph.CalcRise, geopos, 1013.25, 15.0)
 
 if sunrise.Flag >= 0 {
     time := swisseph.Revjul(sunrise.Time, swisseph.GregCal)
-    fmt.Printf("Sunrise: %02.0f:%02.0f UTC\n", 
+    fmt.Printf("Sunrise: %02.0f:%02.0f UTC\n",
         time.Hour, (time.Hour-float64(int(time.Hour)))*60)
 }
 
 // Sunset
-sunset := swisseph.RiseTrans(jd, swisseph.Sun, "", 
+sunset := swisseph.RiseTrans(jd, swisseph.Sun, "",
     swisseph.FlagSwieph, swisseph.CalcSet, geopos, 1013.25, 15.0)
 
 if sunset.Flag >= 0 {
     time := swisseph.Revjul(sunset.Time, swisseph.GregCal)
-    fmt.Printf("Sunset: %02.0f:%02.0f UTC\n", 
+    fmt.Printf("Sunset: %02.0f:%02.0f UTC\n",
         time.Hour, (time.Hour-float64(int(time.Hour)))*60)
 }
 ```
@@ -133,14 +133,14 @@ if sunset.Flag >= 0 {
 ```go
 jd := swisseph.Julday(2024, 1, 1, 12.0, swisseph.GregCal)
 
-eclipse := swisseph.SolEclipseWhenGlob(jd, swisseph.FlagSwieph, 
+eclipse := swisseph.SolEclipseWhenGlob(jd, swisseph.FlagSwieph,
     swisseph.EclAlltypesSolar, false)
 
 if eclipse.Flag >= 0 {
     date := swisseph.Revjul(eclipse.Maximum, swisseph.GregCal)
-    fmt.Printf("Next solar eclipse: %04d-%02d-%02d\n", 
+    fmt.Printf("Next solar eclipse: %04d-%02d-%02d\n",
         date.Year, date.Month, date.Day)
-    
+
     if eclipse.Flag & swisseph.EclTotal != 0 {
         fmt.Println("Type: Total")
     } else if eclipse.Flag & swisseph.EclAnnular != 0 {
@@ -158,7 +158,7 @@ swisseph.SetSidMode(swisseph.SidmLahiri, 0, 0)
 jd := swisseph.Julday(2024, 1, 1, 12.0, swisseph.GregCal)
 
 // Calculate with sidereal flag
-result := swisseph.CalcUT(jd, swisseph.Sun, 
+result := swisseph.CalcUT(jd, swisseph.Sun,
     swisseph.FlagSwieph | swisseph.FlagSidereal)
 
 fmt.Printf("Sidereal Sun: %.2f°\n", result.Data[0])
@@ -215,7 +215,7 @@ swisseph.FlagTopoctr   // Topocentric
 
 - Read the [full README](README.md) for detailed documentation
 - Check out the [examples](examples/) directory
-- Review the [API documentation](https://pkg.go.dev/github.com/tejzpr/go-swisseph)
+- Review the [API documentation](https://pkg.go.dev/github.com/hpsbranco/go-swisseph/v2)
 - Learn about [Swiss Ephemeris](https://www.astro.com/swisseph/)
 
 ## Need Help?
@@ -226,4 +226,3 @@ swisseph.FlagTopoctr   // Topocentric
 - Review the test files for more usage examples
 
 Happy calculating! 🌟
-

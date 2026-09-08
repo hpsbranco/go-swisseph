@@ -5,7 +5,7 @@ Thank you for your interest in contributing to Go Swiss Ephemeris! This document
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/tejzpr/go-swisseph.git`
+2. Clone your fork: `git clone https://github.com/hpsbranco/go-swisseph.git`
 3. Create a new branch: `git checkout -b feature/your-feature-name`
 4. Make your changes
 5. Test your changes: `make test`
@@ -26,7 +26,7 @@ Thank you for your interest in contributing to Go Swiss Ephemeris! This document
 
 ```bash
 # Clone and setup
-git clone https://github.com/tejzpr/go-swisseph.git
+git clone https://github.com/hpsbranco/go-swisseph.git
 cd go-swisseph
 
 # Run the setup script (recommended)
@@ -166,4 +166,3 @@ If you have questions, feel free to:
 ## Thank You!
 
 Your contributions help make this project better for everyone. Thank you for taking the time to contribute!
-
