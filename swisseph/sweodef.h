@@ -10,7 +10,7 @@
    Does auto-detection of MSDOS (TURBO_C or MS_C),  HPUNIX, Linux.
    Must be extended for more portability; there should be a way
    to detect byte order and file system type.
-   
+
 ************************************************************/
 
 /* Copyright (C) 1997 - 2021 Astrodienst AG, Switzerland.  All rights reserved.
@@ -23,7 +23,7 @@
   Swiss Ephemeris is distributed with NO WARRANTY OF ANY KIND.  No author
   or distributor accepts any responsibility for the consequences of using it,
   or for whether it serves any particular purpose or works at all, unless he
-  or she says so in writing.  
+  or she says so in writing.
 
   Swiss Ephemeris is made available by its authors under a dual licensing
   system. The software developer, who uses any part of Swiss Ephemeris
@@ -42,7 +42,7 @@
   See https://www.gnu.org/licenses/agpl-3.0.html
 
   If the developer choses the Swiss Ephemeris Professional license,
-  he must follow the instructions as found in http://www.astro.com/swisseph/ 
+  he must follow the instructions as found in http://www.astro.com/swisseph/
   and purchase the Swiss Ephemeris Professional Edition from Astrodienst
   and sign the corresponding license contract.
 
@@ -70,7 +70,7 @@
 #ifndef _OURDEF_INCLUDED	/* ourdef.h is a superset of sweodef.h */
 #ifndef _SWEODEF_INCLUDED /* allow multiple #includes */
 #define _SWEODEF_INCLUDED
- 
+
 # define MY_TRUE 1	/* for use in other defines, before TRUE is defined */
 # define MY_FALSE 0	/* for use in other defines, before TRUE is defined */
 
@@ -84,21 +84,21 @@
  * Borland, VC++ -> __declspec(thread)
  * macOS with C11 -> _Thread_local (requires -std=c11)
  */
-#if !defined(TLSOFF)
+ #if !defined(TLSOFF)
   #if defined(__APPLE__)
     /* macOS: Use C11 thread_local if available, otherwise disable TLS */
     #if (__STDC_VERSION__ >= 201112L) || (defined(__cplusplus) && __cplusplus >= 201103L)
-      #define TLS     _Thread_local
+      #define TLS _Thread_local
     #else
-      #define TLS     /* Disabled on macOS without C11 */
+      #define TLS /* Disabled on macOS without C11 */
     #endif
-  #elif defined(WIN32) || defined(_WIN32)
-    #define TLS     __declspec(thread)
-  #elif defined( __GNUC__ ) || defined( __CYGWIN__ )
+  #elif defined(__GNUC__) || defined(__CYGWIN__)
     /* Linux and other GCC-based systems: Use __thread (GCC extension) */
-    #define TLS     __thread
+    #define TLS __thread
+  #elif defined(WIN32) || defined(_WIN32)
+    #define TLS __declspec(thread)
   #else
-    #define TLS     __declspec(thread)
+    #define TLS
   #endif
 #else
   #define TLS
@@ -209,7 +209,7 @@
                           /* unsigned integer with at least 32 bit precision */
   typedef int     AS_BOOL;
   typedef unsigned int UINT2;	/* unsigned 16 bits */
-# define ABS4	labs		/* abs function for long */ 
+# define ABS4	labs		/* abs function for long */
 #else
   typedef int	int32;
   typedef long long	int64;
@@ -217,14 +217,14 @@
   typedef short	int16;
   typedef double  REAL8;  /* real with at least 64 bit precision */
   typedef int     INT4;   /* signed integer with at least 32 bit precision */
-  typedef unsigned int UINT4; 
+  typedef unsigned int UINT4;
 			/* unsigned integer with at least 32 bit precision */
   typedef int     AS_BOOL;
   typedef unsigned short UINT2;	/* unsigned 16 bits */
   # define ABS4	abs		/* abs function for long */
 #endif
 
-#if MSDOS 
+#if MSDOS
 # ifdef TURBO_C
 #   include <alloc.h>		/* MSC needs malloc ! */
 # else
@@ -233,12 +233,12 @@
 # define SIGALRM SIGINT
 #endif
 
-#ifndef TRUE 
+#ifndef TRUE
 #  define TRUE 1
 #  define FALSE 0
 #endif
 
-#ifndef OK 
+#ifndef OK
 #  define OK (0)
 #  define ERR (-1)
 #endif
@@ -255,7 +255,7 @@ typedef unsigned char UCHAR;
 #define SCP	(char*)
 
 # define ODEGREE_STRING "°"	/* degree as string, utf8 encoding */
- 
+
 
 
 #ifndef HUGE
@@ -264,18 +264,18 @@ typedef unsigned char UCHAR;
 #ifndef M_PI
 #  define M_PI 3.14159265358979323846
 #endif
- 
+
 /* #define forward static  obsolete */
 
 #define AS_MAXCH 256    /* used for string declarations, allowing 255 char+\0 */
- 
+
 /*
 #define DEGTORAD 0.0174532925199433
 #define RADTODEG 57.2957795130823
 */
 #define RADTODEG (180.0 / M_PI)
 #define DEGTORAD (M_PI / 180.0)
- 
+
 typedef int32    centisec;       /* centiseconds used for angles and times */
 #define CS	(centisec)	/* use for casting */
 #define CSEC	centisec	/* use for typing */
@@ -292,12 +292,12 @@ typedef int32    centisec;       /* centiseconds used for angles and times */
 #define DEG180  (180 * DEG)
 #define DEG270  (270 * DEG)
 #define DEG360  (360 * DEG)
- 
+
 /* #define CSTORAD  4.84813681109536E-08  centisec to rad: pi / 180 /3600/100 */
 /* #define RADTOCS  2.06264806247096E+07  rad to centisec 180*3600*100/pi */
 #define CSTORAD	(DEGTORAD / 360000.0)
 #define RADTOCS (RADTODEG * 360000.0)
- 
+
 #define CS2DEG	(1.0/360000.0)	/* centisec to degree */
 
 /* control strings for fopen()	*/

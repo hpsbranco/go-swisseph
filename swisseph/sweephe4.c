@@ -13,7 +13,7 @@ a fast precomputed ephemeris
   Swiss Ephemeris is distributed with NO WARRANTY OF ANY KIND.  No author
   or distributor accepts any responsibility for the consequences of using it,
   or for whether it serves any particular purpose or works at all, unless he
-  or she says so in writing.  
+  or she says so in writing.
 
   Swiss Ephemeris is made available by its authors under a dual licensing
   system. The software developer, who uses any part of Swiss Ephemeris
@@ -32,7 +32,7 @@ a fast precomputed ephemeris
   See https://www.gnu.org/licenses/agpl-3.0.html
 
   If the developer choses the Swiss Ephemeris Professional license,
-  he must follow the instructions as found in http://www.astro.com/swisseph/ 
+  he must follow the instructions as found in http://www.astro.com/swisseph/
   and purchase the Swiss Ephemeris Professional Edition from Astrodienst
   and sign the corresponding license contract.
 
@@ -82,7 +82,7 @@ static char *my_makepath(char *d, char *s);
 
 # ifdef INTEL_BYTE_ORDER
 /********************************************************************/
-void shortreorder (UCHAR *p, int n) 
+void shortreorder (UCHAR *p, int n)
 			   /* p points to memory filled with 16-bit values; for
                            each of the values the seqeuence of the two bytes
                            has to be reversed, to translate HP-UX and VAX
@@ -153,7 +153,7 @@ centisec *ephread(double jd, int plalist, int flag, char *errtext)
       goto err_exit;
     ix = jdlong - jdbase;
   }
-  jfract = jd - 0.5 - jdlong;        
+  jfract = jd - 0.5 - jdlong;
   /*
    * we use the interpolator even for jfract = 0, because it delivers
    * the speed term. The computation overhead is unimportant
@@ -222,8 +222,8 @@ double *dephread2(double jd, int plalist, int flag, char *errtext)
 {
   static int jdbase =  INVALID_BASE;
   static int lastplalist = 0;
-  static double lon[EP_NP][EPBS]; // buffer for 20 days unpacked ephe 
-  static double out[2 * EP_NP];	 // buffer for return longitude and return speed 
+  static double lon[EP_NP][EPBS]; // buffer for 20 days unpacked ephe
+  static double out[2 * EP_NP];	 // buffer for return longitude and return speed
   int p, pf;
   int ix, jdlong, iflagret;
   double lp;
@@ -261,7 +261,7 @@ double *dephread2(double jd, int plalist, int flag, char *errtext)
       goto err_exit;
     ix = jdlong - jdbase;
   }
-  jfract = jd - 0.5 - jdlong;        
+  jfract = jd - 0.5 - jdlong;
   /*
    * we use the interpolator even for jfract = 0, because it delivers
    * the speed term. The computation overhead is unimportant
@@ -323,10 +323,10 @@ err_exit:
     return out;
   }
   return NULL;
-}	
+}
 
 /****************************************************
-  unpack an ephe file block specified by jlong 
+  unpack an ephe file block specified by jlong
   and the planets specified by pflag into
   the array lon[p][EPBS], starting at index i0.
   jdl is (long) floor(full julian date);
@@ -349,7 +349,7 @@ static int ephe4_unpack(int jdl, int plalist, centisec lon[][EPBS], int i0,char 
   shortreorder((UCHAR *) &e, sizeof(struct ep4));
 #endif
   for (p = PLACALC_SUN, pf = 1; p <= PLACALC_CHIRON; p++, pf = pf << 1) {
-    if ((plalist & pf) == 0) continue; 
+    if ((plalist & pf) == 0) continue;
     l_ret = e.elo[p].p0m * 6000L + e.elo[p].p0s;	/* csec */
     d_ret = e.elo[p].pd1m * 6000L + e.elo[p].pd1s;	/* csec */
     lon[p][i0] = l_ret;
@@ -380,10 +380,10 @@ static int ephe4_unpack(int jdl, int plalist, centisec lon[][EPBS], int i0,char 
     l_ret = e.ecl0m * 6000L + e.ecl0s;
     lon[EP_ECL_INDEX][i0] = l_ret;
     for (i = 1; i < NDB; i++)
-      lon[EP_ECL_INDEX][i0+i] =  l_ret + e.ecld1[i-1]; 
+      lon[EP_ECL_INDEX][i0+i] =  l_ret + e.ecld1[i-1];
   }
   if ( plalist & EP_NUT_BIT) { /* unpack nut */
-    for (i = 0; i < NDB; i++) 
+    for (i = 0; i < NDB; i++)
       lon[EP_NUT_INDEX][i0+i] = e.nuts[i] ;
   }
   return OK;
@@ -406,9 +406,9 @@ static int ephe4_unpack_d(int jdl, int plalist, double lon[][EPBS], int i0,char 
   shortreorder((UCHAR *) &e, sizeof(struct ep4));
 #endif
   for (p = PLACALC_SUN, pf = 1; p <= PLACALC_CHIRON; p++, pf = pf << 1) {
-    if ((plalist & pf) == 0) continue; 
-    l_ret = (e.elo[p].p0m * 6000 + e.elo[p].p0s) * CS2DEG;	
-    d_ret = (e.elo[p].pd1m * 6000 + e.elo[p].pd1s) * CS2DEG;	
+    if ((plalist & pf) == 0) continue;
+    l_ret = (e.elo[p].p0m * 6000 + e.elo[p].p0s) * CS2DEG;
+    d_ret = (e.elo[p].pd1m * 6000 + e.elo[p].pd1s) * CS2DEG;
     lon[p][i0] = l_ret;
     l_ret += d_ret;
     if (l_ret < 0) {
@@ -437,17 +437,17 @@ static int ephe4_unpack_d(int jdl, int plalist, double lon[][EPBS], int i0,char 
     l_ret = (e.ecl0m * 6000L + e.ecl0s) * CS2DEG;
     lon[EP_ECL_INDEX][i0] = l_ret;
     for (i = 1; i < NDB; i++)
-      lon[EP_ECL_INDEX][i0+i] =  l_ret + e.ecld1[i-1] * CS2DEG; 
+      lon[EP_ECL_INDEX][i0+i] =  l_ret + e.ecld1[i-1] * CS2DEG;
   }
   if ( plalist & EP_NUT_BIT) { /* unpack nut */
-    for (i = 0; i < NDB; i++) 
+    for (i = 0; i < NDB; i++)
       lon[EP_NUT_INDEX][i0+i] = e.nuts[i] * CS2DEG ;
   }
   return OK;
-}	
+}
 
 /****************************************************
-  position ephe file at proper position for julian 
+  position ephe file at proper position for julian
   date jd; if writeflag = TRUE (write mode), create file
   if required. Return OK or ERR.
   globals used: ephfp.
@@ -458,7 +458,7 @@ int eph4_posit (int jlong, AS_BOOL writeflag, char *errtext)
   long posit;
   static int open_filenr = -10000;
   char fname[AS_MAXCH], s[80], *sp;
-  filenr = jlong / EP4_NDAYS;   
+  filenr = jlong / EP4_NDAYS;
   if (jlong < 0 && filenr * EP4_NDAYS != jlong) filenr--;
   posit = jlong - filenr * EP4_NDAYS;
   posit = posit / NDB * sizeof(struct ep4);
@@ -485,7 +485,7 @@ int eph4_posit (int jlong, AS_BOOL writeflag, char *errtext)
 	  sprintf (errtext,"eph4_posit: could not create file %s\n",  fname);
 	}
       }
-      return (ERR);	
+      return (ERR);
     }
     open_filenr = filenr;
   }
@@ -493,7 +493,7 @@ int eph4_posit (int jlong, AS_BOOL writeflag, char *errtext)
     return (OK);
   } else {
     if (errtext != NULL)
-      sprintf (errtext,"eph4_posit: fseek(%ld) of file nr %d failed\n",  
+      sprintf (errtext,"eph4_posit: fseek(%ld) of file nr %d failed\n",
 	      posit, open_filenr);
     return (ERR);
   }
@@ -504,13 +504,13 @@ quicker Everett interpolation, after Pottenger
 version  for long, 17.7.91 by Alois Treindl
 *****************************************************/
 static void inpolq_l(int n, int o, double p, centisec *x, centisec *axu, centisec *adxu)
-/* 
- * interpolate between x[n] and x[n-1], at argument n+p 
- * o = order of interpolation, maximum 5 
- * p = argument in [0..1] 
- * x[] array of function values, x[n-2]..x[n+3] must exist 
- * axu pointer for storage of result 
- * adxu pointer for storage of dx/dt  
+/*
+ * interpolate between x[n] and x[n-1], at argument n+p
+ * o = order of interpolation, maximum 5
+ * p = argument in [0..1]
+ * x[] array of function values, x[n-2]..x[n+3] must exist
+ * axu pointer for storage of result
+ * adxu pointer for storage of dx/dt
  */
 {
   static double	q,q2,q3,q4,q5,
@@ -596,12 +596,12 @@ return OK, no error checking
 Was used in Placalc to interpolate 80-day stored ephe for outer planets.
 *****************************************************/
 static int inpolq(int n, int o, double p, double *x, double *axu, double *adxu)
-// n	interpolate between x[n] and x[n-1], at argument n+p 
-// o	order of interpolation, maximum 5 
-// p,	argument , intervall [0..1] 
-// x[]	array of function values, x[n-o]..x[n+o] must exist 
-// *axu	pointer for storage of result 
-// *adxu pointer for storage of dx/dt  
+// n	interpolate between x[n] and x[n-1], at argument n+p
+// o	order of interpolation, maximum 5
+// p,	argument , intervall [0..1]
+// x[]	array of function values, x[n-o]..x[n+o] must exist
+// *axu	pointer for storage of result
+// *adxu pointer for storage of dx/dt
 {
   static double	q,q2,q3,q4,q5,p2,p3,p4,p5, u,u0,u1,u2;
   static double lastp = 9999.0;
@@ -676,6 +676,7 @@ static char *my_makepath(char *d, char *s)
     strcpy (d, s);	/* s is absolute path name */
   }
 # if MSDOS
+  char *p;
   while ((p = strchr(d, '/')) != NULL) *p = '\\';
 # endif
   return (d);
@@ -694,7 +695,7 @@ int ephe_plac2swe(int p)
   return -1;
 }
 
-int old_d2l (double x)		
+int old_d2l (double x)
 {
   if (x >=0)
     return ((int) (x + 0.5));
